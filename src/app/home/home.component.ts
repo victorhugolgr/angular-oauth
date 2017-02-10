@@ -1,13 +1,20 @@
-import { Component } from '@angular/core';
+import { ContatoService } from '../contato.service';
+import { Contato } from '../domain/contato';
+import { Component, OnInit } from '@angular/core';
 import { OAuthService } from 'angular2-oauth2/oauth-service';
 
 @Component({
   templateUrl: './home.component.html'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
-  constructor(private oAuthService: OAuthService) {
-  }
+  errorMessage: string;
+  contatos: Contato[];
+  mode = 'Observable';
+
+  constructor(private oAuthService: OAuthService, private contatoService: ContatoService) { }
+
+  ngOnInit() {this.getContatos(); }
 
   public login() {
     this.oAuthService.initImplicitFlow();
@@ -21,6 +28,14 @@ export class HomeComponent {
     const claims = this.oAuthService.getIdentityClaims();
     if (!claims) return null;
     return claims.given_name;
+  }
+
+  getContatos() {
+    this.contatoService.getHeroes()
+                        .subscribe(
+                          contatos => this.contatos = contatos,
+                          error => this.errorMessage = <any>error
+                          );
   }
 
 }

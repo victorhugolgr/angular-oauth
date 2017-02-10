@@ -12,6 +12,9 @@
     Logout
 </button>
  
-<div>
-    Username/Passwort zum Testen: max/geheim
-</div>
+<h1>Tour of Contatos ({{mode}})</h1>
+<h3>Heroes:</h3>
+<ul>
+  <li *ngFor="let contato of contatos">{{contato.nome}}</li>
+</ul>
+<p class="error" *ngIf="errorMessage">Erro {{errorMessage}}</p>
